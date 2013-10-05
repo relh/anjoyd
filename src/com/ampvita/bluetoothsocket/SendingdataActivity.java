@@ -12,9 +12,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,15 +26,17 @@ import android.widget.Toast;
 public class SendingdataActivity extends Activity {
 	/** Called when the activity is first created. */
 	private BluetoothAdapter mBluetoothAdapter = null;
-	static final UUID MY_UUID = UUID
-			.fromString("4e4610be-2d72-11e3-a59d-f23c91aec05e");
+	UUID MY_UUID;
 	static String address = "00:1B:DC:06:62:48";
-
+	
 	static SendData sendData;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+                                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_main);
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		if (mBluetoothAdapter == null) {
@@ -46,6 +52,13 @@ public class SendingdataActivity extends Activity {
 			finish();
 			return;
 		} // have correct adapter
+		if (Build.VERSION.SDK_INT == 15) {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			MY_UUID = UUID.fromString("4e4610be-2d72-11e3-a59d-f23c91aec05e");
+		} else {
+			findViewById(R.id.VideoView).setVisibility(View.INVISIBLE);
+			MY_UUID = UUID.fromString("3e4610be-2d72-11e3-a59d-f23c91aec05e");
+		}
 		sendData = new SendData();
 		sendData.sendMessage("hey dan");
 	}
@@ -59,7 +72,7 @@ public class SendingdataActivity extends Activity {
 	private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
 	    
 		public float normalize(float in) {
-			return (float)(Math.floor(((in/9.8)*255)));
+			return (float)(Math.floor((((in+9.8)/19.6)*255)));
 		}
 		
 		@Override

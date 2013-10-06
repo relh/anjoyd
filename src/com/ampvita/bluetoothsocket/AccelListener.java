@@ -56,6 +56,7 @@ public class AccelListener extends Service implements SensorEventListener{
 		intent.putExtra("z", values[2]);
 		
 		sendBroadcast(intent);
+		
 	}
 
 	@Override

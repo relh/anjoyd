@@ -11,9 +11,9 @@
      android:layout_height="wrap_content"
      android:text="TextView" />
 
- <VideoView 
+ <ImageView 
     android:layout_height="fill_parent"
     android:layout_width="fill_parent" 
-    android:id="@+id/VideoView" />
+    android:id="@+id/ImageView" />
  
 </LinearLayout>
